@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express'; // path still used for /uploads static serving
+import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
@@ -17,6 +18,12 @@ const port = process.env.PORT || 8000;
 
 connectDB();
 const app = express();
+
+// CORS
+app.use(cors({
+  origin: ['https://junefest-main.netlify.app', 'http://localhost:3000'],
+  credentials: true,
+}));
 
 // Body parser middleware
 app.use(express.json());

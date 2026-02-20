@@ -1,0 +1,430 @@
+/* ===========================
+   JUNEFEST Theme Variables
+   =========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inika:wght@400;700&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+:root {
+  --jf-green:         rgba(189, 242, 212, 0.9);
+  --jf-green-solid:   #dcfeed;
+  --jf-green-dark:    rgba(189, 242, 212, 1);
+  --jf-coral:         #ef8376;
+  --jf-coral-dark:    #df7366;
+  --jf-forest:        #0c4f00;
+  --jf-purple:        #2b252c;
+  --jf-purple-light:  #483949;
+  --jf-orange:        #ffa331;
+  --jf-font-serif:    'Inika', serif;
+  --jf-font-sans:     'Source Sans Pro', sans-serif;
+  --jf-bg:            #f8fffe;
+  --jf-text:          #2b252c;
+  --jf-muted:         #5b5b5b;
+}
+
+/* ===========================
+   Global Base Styles
+   =========================== */
+
+body {
+  font-family: var(--jf-font-sans);
+  background-color: var(--jf-bg);
+  color: var(--jf-text);
+}
+
+h1, h2, h3 {
+  font-family: var(--jf-font-serif);
+}
+
+/* ===========================
+   JUNEFEST Navbar
+   =========================== */
+
+.jf-navbar {
+  background-color: var(--jf-green) !important;
+  backdrop-filter: blur(6px);
+  border-bottom: 2px solid rgba(189, 242, 212, 0.5);
+}
+
+.jf-navbar .navbar-brand,
+.jf-navbar .nav-link,
+.jf-navbar .navbar-toggler {
+  color: var(--jf-forest) !important;
+  font-family: var(--jf-font-serif);
+  font-weight: 600;
+}
+
+.jf-navbar .nav-link:hover {
+  color: var(--jf-coral-dark) !important;
+}
+
+.jf-navbar .dropdown-menu {
+  background-color: var(--jf-green-solid);
+  border: 1px solid rgba(189, 242, 212, 0.8);
+}
+
+.jf-navbar .dropdown-item:hover {
+  background-color: var(--jf-coral);
+  color: white;
+}
+
+/* ===========================
+   Page Headers (tropical bg)
+   =========================== */
+
+.jf-page-header {
+  background-image: url('/images/leaves-small.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  padding: 5em 0 2em;
+  text-align: center;
+  position: relative;
+  color: var(--jf-forest);
+}
+
+.jf-page-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(220, 254, 237, 0.4);
+}
+
+.jf-page-header .jf-header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.jf-page-header h1 {
+  font-family: var(--jf-font-serif);
+  color: var(--jf-purple);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.7);
+  font-size: 3em;
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+
+.btn-jf-coral {
+  background-color: var(--jf-coral);
+  border-color: var(--jf-coral-dark);
+  color: white;
+  font-family: var(--jf-font-sans);
+  font-weight: 600;
+}
+
+.btn-jf-coral:hover,
+.btn-jf-coral:focus {
+  background-color: var(--jf-coral-dark);
+  border-color: var(--jf-coral-dark);
+  color: white;
+}
+
+.btn-jf-green {
+  background-color: var(--jf-forest);
+  border-color: var(--jf-forest);
+  color: white;
+}
+
+.btn-jf-green:hover {
+  background-color: #0a3d00;
+  border-color: #0a3d00;
+  color: white;
+}
+
+/* ===========================
+   Countdown Timer
+   =========================== */
+
+.jf-countdown {
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--jf-green-dark));
+  text-align: center;
+  padding: 1.5em;
+}
+
+.jf-countdown h2 {
+  color: var(--jf-forest);
+  font-family: var(--jf-font-serif);
+  display: inline;
+  margin: 0 0.5em;
+}
+
+.jf-countdown .jf-end-msg {
+  color: var(--jf-coral);
+  font-size: 2em;
+  font-family: var(--jf-font-serif);
+}
+
+/* ===========================
+   Image Carousel
+   =========================== */
+
+.jf-carousel-section {
+  padding: 2em 0;
+  background: var(--jf-green-solid);
+}
+
+.jf-carousel .carousel-item img {
+  max-height: 500px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.jf-carousel .carousel-control-prev-icon,
+.jf-carousel .carousel-control-next-icon {
+  filter: invert(30%) sepia(50%) saturate(500%) hue-rotate(80deg);
+}
+
+/* ===========================
+   Bar Cards
+   =========================== */
+
+.jf-bar-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.jf-bar-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.jf-bar-card .card-img-top {
+  height: 220px;
+  object-fit: cover;
+}
+
+.jf-bar-card .card-body {
+  background: white;
+  border-top: 3px solid var(--jf-coral);
+}
+
+.jf-bar-card .jf-bar-order {
+  background: var(--jf-coral);
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+.jf-bar-card .jf-featured-drink {
+  font-size: 0.85em;
+  color: var(--jf-forest);
+  background: var(--jf-green-solid);
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* ===========================
+   Event Cards
+   =========================== */
+
+.jf-event-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.jf-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.jf-event-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.jf-event-card .jf-event-badge {
+  background: var(--jf-green-solid);
+  color: var(--jf-forest);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.jf-event-card .jf-rsvp-count {
+  font-size: 0.85em;
+  color: var(--jf-muted);
+}
+
+/* ===========================
+   Footer
+   =========================== */
+
+.jf-footer {
+  background-color: var(--jf-purple);
+  color: rgba(255,255,255,0.8);
+  padding: 2em 0;
+  text-align: center;
+}
+
+.jf-footer a {
+  color: var(--jf-coral);
+  text-decoration: none;
+}
+
+.jf-footer a:hover {
+  color: var(--jf-coral-dark);
+}
+
+.jf-footer .jf-social-links a {
+  margin: 0 0.75em;
+  font-size: 1.3em;
+}
+
+/* ===========================
+   Admin CMS Styles
+   =========================== */
+
+.jf-admin-header {
+  background: linear-gradient(135deg, var(--jf-green-solid), var(--jf-coral) 200%);
+  padding: 1.5em 2em;
+  border-radius: 8px;
+  margin-bottom: 1.5em;
+}
+
+.jf-admin-header h1 {
+  color: var(--jf-purple);
+  margin: 0;
+  font-size: 1.8em;
+}
+
+.jf-upload-zone {
+  border: 2px dashed var(--jf-coral);
+  border-radius: 12px;
+  padding: 2em;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: white;
+}
+
+.jf-upload-zone:hover {
+  background: var(--jf-green-solid);
+}
+
+.jf-img-thumbnail-wrap {
+  position: relative;
+  display: inline-block;
+  margin: 6px;
+}
+
+.jf-img-thumbnail-wrap img {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.jf-img-thumbnail-wrap .jf-delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--jf-coral);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================
+   Home page hero
+   =========================== */
+
+.jf-hero {
+  background-image: url('/images/leaves.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.jf-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(220, 254, 237, 0.35);
+}
+
+.jf-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 2em;
+}
+
+.jf-hero-logo {
+  max-width: 300px;
+  width: 80%;
+  margin-bottom: 1em;
+}
+
+/* ===========================
+   Shop integration overrides
+   =========================== */
+
+.rating svg {
+  color: var(--jf-coral-dark);
+}
+
+.btn-primary {
+  background-color: var(--jf-coral);
+  border-color: var(--jf-coral-dark);
+}
+
+.btn-primary:hover {
+  background-color: var(--jf-coral-dark);
+  border-color: var(--jf-coral-dark);
+}
+
+.bg-dark {
+  background-color: var(--jf-purple) !important;
+}
+
+/* ===========================
+   Misc utility
+   =========================== */
+
+.jf-section-title {
+  font-family: var(--jf-font-serif);
+  color: var(--jf-purple);
+  border-bottom: 3px solid var(--jf-coral);
+  padding-bottom: 0.3em;
+  margin-bottom: 1em;
+  display: inline-block;
+}
+
+.jf-divider {
+  border: none;
+  height: 3px;
+  background: linear-gradient(to right, var(--jf-coral), var(--jf-green-dark));
+  margin: 2em 0;
+  opacity: 0.4;
+}
+
+.text-jf-coral { color: var(--jf-coral) !important; }
+.text-jf-forest { color: var(--jf-forest) !important; }
+.bg-jf-green { background-color: var(--jf-green-solid) !important; }

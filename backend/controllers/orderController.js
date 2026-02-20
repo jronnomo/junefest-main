@@ -21,6 +21,19 @@ const addOrderItems = asyncHandler(async (req, res) => {
       _id: { $in: orderItems.map((x) => x._id) },
     });
 
+    // validate stock availability
+    for (const itemFromClient of orderItems) {
+      const dbItem = itemsFromDB.find((i) => i._id.toString() === itemFromClient._id);
+      if (!dbItem) {
+        res.status(404);
+        throw new Error(`Product not found: ${itemFromClient._id}`);
+      }
+      if (dbItem.countInStock < itemFromClient.qty) {
+        res.status(400);
+        throw new Error(`${dbItem.name} only has ${dbItem.countInStock} left in stock`);
+      }
+    }
+
     // map over the order items and use the price from our items from database
     const dbOrderItems = orderItems.map((itemFromClient) => {
       const matchingItemFromDB = itemsFromDB.find((itemFromDB) => itemFromDB._id.toString() === itemFromClient._id);
@@ -102,6 +115,13 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     };
 
     const updatedOrder = await order.save();
+
+    // decrement stock for each ordered item
+    for (const item of order.orderItems) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { countInStock: -item.qty },
+      });
+    }
 
     res.json(updatedOrder);
   } else {

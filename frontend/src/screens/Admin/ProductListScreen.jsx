@@ -1,5 +1,5 @@
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row, Col } from 'react-bootstrap';
+import { Table, Button, Row, Col, Badge } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -67,6 +67,7 @@ const ProductListScreen = () => {
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
+                <th>STOCK</th>
                 <th></th>
               </tr>
             </thead>
@@ -78,6 +79,11 @@ const ProductListScreen = () => {
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
+                  <td>
+                    <Badge bg={product.countInStock === 0 ? 'danger' : product.countInStock <= 5 ? 'warning' : 'success'} text={product.countInStock <= 5 && product.countInStock > 0 ? 'dark' : undefined}>
+                      {product.countInStock === 0 ? 'Out of stock' : product.countInStock}
+                    </Badge>
+                  </td>
                   <td>
                     <LinkContainer to={`/admin/products/${product._id}/edit`}>
                       <Button variant='light' className='btn-sm mx-2'>

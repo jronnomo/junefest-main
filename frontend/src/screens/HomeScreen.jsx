@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { useGetEventsQuery } from '../slices/eventsApiSlice';
+import { useGetSettingsQuery } from '../slices/settingsApiSlice';
 import CountdownTimer from '../components/CountdownTimer';
 import ImageCarousel from '../components/ImageCarousel';
 
@@ -14,8 +14,9 @@ const team = [
 ];
 
 const HomeScreen = () => {
-  const { data: events } = useGetEventsQuery();
-  const activeEvent = events?.find((e) => e.isActive);
+  const { data: settings } = useGetSettingsQuery();
+  const countdownDate = settings?.junefestDate || null;
+  const countdownLabel = settings?.junefestLabel || 'JUNEFEST';
 
   return (
     <>
@@ -32,16 +33,18 @@ const HomeScreen = () => {
             className='jf-hero-logo'
           />
           <hr style={{ borderColor: 'rgba(12,79,0,0.3)', width: '60%', margin: '1em auto' }} />
-          {activeEvent ? (
+          {countdownDate ? (
             <>
               <h2 style={{ color: 'var(--jf-forest)', fontFamily: 'var(--jf-font-serif)' }}>
-                {new Date(activeEvent.date).toLocaleDateString('en-US', {
+                {countdownLabel} —{' '}
+                {new Date(countdownDate).toLocaleDateString('en-US', {
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric',
+                  timeZone: 'UTC',
                 })}
               </h2>
-              <CountdownTimer targetDate={activeEvent.date} />
+              <CountdownTimer targetDate={countdownDate} />
             </>
           ) : (
             <p style={{ color: 'var(--jf-forest)', fontSize: '1.1em' }}>

@@ -10,6 +10,7 @@ import uploadRoutes from './routes/uploadRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import barRoutes from './routes/barRoutes.js';
 import carouselRoutes from './routes/carouselRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import cookieParser from 'cookie-parser';
 
@@ -40,6 +41,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/bars', barRoutes);
 app.use('/api/carousel', carouselRoutes);
+app.use('/api/settings', settingsRoutes);
 app.get('/api/config/paypal', (req, res) => res.send({ clientId: process.env.PAYPAL_CLIENT_ID }));
 
 const __dirname = path.resolve();

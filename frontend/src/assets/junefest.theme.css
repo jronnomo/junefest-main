@@ -72,7 +72,7 @@ h1, h2, h3 {
    =========================== */
 
 .jf-page-header {
-  background-image: url('/images/leaves-small.jpg');
+  background-image: url('./leaves-small.jpg');
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
@@ -351,7 +351,7 @@ h1, h2, h3 {
    =========================== */
 
 .jf-hero {
-  background-image: url('/images/leaves.jpg');
+  background-image: url('./leaves.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

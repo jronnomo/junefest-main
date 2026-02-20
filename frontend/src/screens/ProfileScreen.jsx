@@ -10,7 +10,7 @@ import { useProfileMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { useGetMyOrdersQuery } from '../slices/ordersApiSlice';
 import { useGetEventsQuery } from '../slices/eventsApiSlice';
-import { FaTimes, FaCheck } from 'react-icons/fa';
+
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
@@ -177,8 +177,7 @@ const ProfileScreen = () => {
                     <th>ID</th>
                     <th>Date</th>
                     <th>Total</th>
-                    <th>Paid</th>
-                    <th>Delivered</th>
+                    <th>Status</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -189,17 +188,14 @@ const ProfileScreen = () => {
                       <td>{order.createdAt.substring(0, 10)}</td>
                       <td>${order.totalPrice}</td>
                       <td>
-                        {order.isPaid ? (
-                          <FaCheck style={{ color: 'var(--jf-forest)' }} />
+                        {order.isCancelled ? (
+                          <Badge bg='warning' text='dark'>Cancelled</Badge>
+                        ) : order.isDelivered ? (
+                          <Badge bg='success'>Delivered</Badge>
+                        ) : order.isPaid ? (
+                          <Badge bg='info'>Paid</Badge>
                         ) : (
-                          <FaTimes style={{ color: 'red' }} />
-                        )}
-                      </td>
-                      <td>
-                        {order.isDelivered ? (
-                          <FaCheck style={{ color: 'var(--jf-forest)' }} />
-                        ) : (
-                          <FaTimes style={{ color: 'red' }} />
+                          <Badge bg='secondary'>Pending</Badge>
                         )}
                       </td>
                       <td>

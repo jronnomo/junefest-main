@@ -35,7 +35,10 @@ const upload = multer({
 //@route POST /api/upload
 //@access Private/Admin
 router.post('/', upload.single('image'), (req, res) => {
-  res.send({ message: 'Image uploaded', image: `/${req.file.path}` });
+  const baseUrl = process.env.NODE_ENV === 'production'
+    ? `${req.protocol}://${req.get('host')}`
+    : '';
+  res.send({ message: 'Image uploaded', image: `${baseUrl}/${req.file.path}` });
 });
 
 export default router;

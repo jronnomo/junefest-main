@@ -1,5 +1,5 @@
 import path from 'path';
-import express from 'express';
+import express from 'express'; // path still used for /uploads static serving
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
@@ -38,16 +38,9 @@ app.get('/api/config/paypal', (req, res) => res.send({ clientId: process.env.PAY
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'frontend/build')));
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-  );
-} else {
-  app.get('/', (req, res) => {
-    res.send('API is running...');
-  });
-}
+app.get('/', (req, res) => {
+  res.send('JUNEFEST API is running...');
+});
 
 app.use(notFound);
 app.use(errorHandler);

@@ -31,13 +31,15 @@ const CarouselDisplay = ({ images }) => (
     <Carousel className='jf-carousel' interval={3500} fade>
       {images.map((img) => (
         <Carousel.Item key={img._id}>
+          <div style={{ width: '100%', maxWidth: '900px', margin: '0 auto', overflow: 'hidden' }}>
           <img
             className='d-block w-100'
             src={img.url}
             alt={img.altText || 'JUNEFEST photo'}
-            style={{ maxHeight: '500px', objectFit: 'cover' }}
+            style={{ height: '500px', objectFit: 'cover', objectPosition: 'center' }}
             onError={(e) => { e.target.style.display = 'none'; }}
           />
+          </div>
           {img.caption && (
             <Carousel.Caption>
               <p>{img.caption}</p>

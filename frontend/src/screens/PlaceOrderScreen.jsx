@@ -39,7 +39,7 @@ const PlaceOrderScreen = () => {
       dispatch(clearCartItems());
       navigate(`/orders/${res._id}`);
     } catch (error) {
-      toast.error(error);
+      toast.error(error?.data?.message || error?.message || 'Could not place order');
     }
   };
   return (
@@ -118,7 +118,7 @@ const PlaceOrderScreen = () => {
                   <Col>${cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>{error && <Message variant='danger'>{error.data.message}</Message>}</ListGroup.Item>
+              <ListGroup.Item>{error && <Message variant='danger'>{error?.data?.message || 'An error occurred'}</Message>}</ListGroup.Item>
               <ListGroup.Item>
                 <Button
                   type='button'

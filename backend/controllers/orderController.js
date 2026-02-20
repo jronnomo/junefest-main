@@ -61,6 +61,13 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
     const createdOrder = await order.save();
 
+    // decrement stock immediately on order creation
+    for (const item of dbOrderItems) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { countInStock: -item.qty },
+      });
+    }
+
     res.status(201).json(createdOrder);
   }
 });
@@ -116,13 +123,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
     const updatedOrder = await order.save();
 
-    // decrement stock for each ordered item
-    for (const item of order.orderItems) {
-      await Product.findByIdAndUpdate(item.product, {
-        $inc: { countInStock: -item.qty },
-      });
-    }
-
     res.json(updatedOrder);
   } else {
     res.status(404);
@@ -174,13 +174,11 @@ const cancelOrder = asyncHandler(async (req, res) => {
     throw new Error('Order is already cancelled');
   }
 
-  // restore stock if order was paid
-  if (order.isPaid) {
-    for (const item of order.orderItems) {
-      await Product.findByIdAndUpdate(item.product, {
-        $inc: { countInStock: item.qty },
-      });
-    }
+  // always restore stock since it was decremented at order creation
+  for (const item of order.orderItems) {
+    await Product.findByIdAndUpdate(item.product, {
+      $inc: { countInStock: item.qty },
+    });
   }
 
   order.isCancelled = true;

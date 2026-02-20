@@ -1,18 +1,20 @@
 import { Container, Table, Button, Spinner, Badge } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit, FaTrash, FaPlus, FaUsers } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useGetAllEventsQuery, useCreateEventMutation, useDeleteEventMutation } from '../../slices/eventsApiSlice';
 
 const AdminEventsScreen = () => {
+  const navigate = useNavigate();
   const { data: events, isLoading, refetch } = useGetAllEventsQuery();
   const [createEvent, { isLoading: creating }] = useCreateEventMutation();
   const [deleteEvent] = useDeleteEventMutation();
 
   const createHandler = async () => {
     try {
-      await createEvent({
+      const newEvent = await createEvent({
         title: 'New Event',
         eventType: 'other',
         year: new Date().getFullYear(),
@@ -20,8 +22,7 @@ const AdminEventsScreen = () => {
         description: 'Add event description here',
         isActive: false,
       }).unwrap();
-      toast.success('Event created — edit to fill in details');
-      refetch();
+      navigate(`/admin/events/${newEvent._id}/edit`);
     } catch (err) {
       toast.error(err?.data?.message || 'Could not create event');
     }

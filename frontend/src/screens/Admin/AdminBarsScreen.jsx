@@ -1,24 +1,25 @@
 import { Container, Table, Button, Spinner, Badge } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useGetAllBarsQuery, useCreateBarMutation, useDeleteBarMutation } from '../../slices/barsApiSlice';
 
 const AdminBarsScreen = () => {
+  const navigate = useNavigate();
   const { data: bars, isLoading, refetch } = useGetAllBarsQuery();
   const [createBar, { isLoading: creating }] = useCreateBarMutation();
   const [deleteBar] = useDeleteBarMutation();
 
   const createHandler = async () => {
     try {
-      await createBar({
+      const newBar = await createBar({
         name: 'New Bar',
         order: (bars?.length || 0) + 1,
         description: 'Add description here',
       }).unwrap();
-      toast.success('Bar created — edit to fill in details');
-      refetch();
+      navigate(`/admin/bars/${newBar._id}/edit`);
     } catch (err) {
       toast.error(err?.data?.message || 'Could not create bar');
     }

@@ -1,24 +1,30 @@
 import path from 'path';
 import express from 'express';
 import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'junefest',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
   },
 });
 
 function fileFilter(req, file, cb) {
   const filetypes = /jpe?g|png|webp/;
   const mimetypes = /image\/jpe?g|image\/png|image\/webp/;
-
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = mimetypes.test(file.mimetype);
-
   if (extname && mimetype) {
     cb(null, true);
   } else {
@@ -26,19 +32,13 @@ function fileFilter(req, file, cb) {
   }
 }
 
-const upload = multer({
-  storage,
-  fileFilter,
-});
+const upload = multer({ storage, fileFilter });
 
-//@desc Upload a product image
+//@desc Upload an image to Cloudinary
 //@route POST /api/upload
 //@access Private/Admin
 router.post('/', upload.single('image'), (req, res) => {
-  const baseUrl = process.env.NODE_ENV === 'production'
-    ? `${req.protocol}://${req.get('host')}`
-    : '';
-  res.send({ message: 'Image uploaded', image: `${baseUrl}/${req.file.path}` });
+  res.send({ message: 'Image uploaded', image: req.file.path });
 });
 
 export default router;

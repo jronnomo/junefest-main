@@ -8,6 +8,7 @@ import {
   usePayOrderMutation,
   useGetPayPalClientIdQuery,
   useDeliverOrderMutation,
+  useCancelOrderMutation,
 } from '../slices/ordersApiSlice';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
@@ -21,6 +22,7 @@ const OrderScreen = () => {
   const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
   const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
+  const [cancelOrder, { isLoading: loadingCancel }] = useCancelOrderMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -46,9 +48,20 @@ const OrderScreen = () => {
 
   const deliverOrderHandler = async () => {
     try {
-      await deliverOrder(orderId);
+      await deliverOrder(orderId).unwrap();
       refetch();
       toast.success('Order delivered');
+    } catch (error) {
+      toast.error(error?.data?.message || error.message);
+    }
+  };
+
+  const cancelOrderHandler = async () => {
+    if (!window.confirm('Cancel this order? This cannot be undone.')) return;
+    try {
+      await cancelOrder(orderId).unwrap();
+      refetch();
+      toast.success('Order cancelled');
     } catch (error) {
       toast.error(error?.data?.message || error.message);
     }
@@ -198,12 +211,27 @@ const OrderScreen = () => {
               )}
 
               {loadingDeliver && <Loader />}
+              {loadingCancel && <Loader />}
 
-              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && !order.isCancelled && (
                 <ListGroup.Item>
                   <Button type='button' className='btn btn-block salmon-button' onClick={deliverOrderHandler}>
-                    Mark as delivered
+                    Mark as Delivered
                   </Button>
+                </ListGroup.Item>
+              )}
+
+              {userInfo && userInfo.isAdmin && !order.isDelivered && !order.isCancelled && (
+                <ListGroup.Item>
+                  <Button type='button' variant='danger' className='btn btn-block w-100' onClick={cancelOrderHandler}>
+                    Cancel Order
+                  </Button>
+                </ListGroup.Item>
+              )}
+
+              {order.isCancelled && (
+                <ListGroup.Item>
+                  <Message variant='warning'>Order cancelled on {order.cancelledAt?.substring(0, 10)}</Message>
                 </ListGroup.Item>
               )}
             </ListGroup>

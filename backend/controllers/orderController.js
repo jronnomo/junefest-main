@@ -156,4 +156,37 @@ const getOrders = asyncHandler(async (req, res) => {
   res.status(200).json(orders);
 });
 
-export { addOrderItems, getMyOrders, getOrderById, updateOrderToDelivered, updateOrderToPaid, getOrders };
+//@desc Cancel an order (admin only)
+//@route PUT /api/orders/:id/cancel
+//@access Private/Admin
+const cancelOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (!order) {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+  if (order.isDelivered) {
+    res.status(400);
+    throw new Error('Cannot cancel an order that has already been delivered');
+  }
+  if (order.isCancelled) {
+    res.status(400);
+    throw new Error('Order is already cancelled');
+  }
+
+  // restore stock if order was paid
+  if (order.isPaid) {
+    for (const item of order.orderItems) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { countInStock: item.qty },
+      });
+    }
+  }
+
+  order.isCancelled = true;
+  order.cancelledAt = Date.now();
+  const updatedOrder = await order.save();
+  res.json(updatedOrder);
+});
+
+export { addOrderItems, getMyOrders, getOrderById, updateOrderToDelivered, updateOrderToPaid, getOrders, cancelOrder };

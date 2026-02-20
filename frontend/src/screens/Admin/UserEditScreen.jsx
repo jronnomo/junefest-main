@@ -36,9 +36,8 @@ const UserEditScreen = () => {
         name,
         email,
         isAdmin,
-      });
+      }).unwrap();
       toast.success('User updated');
-      refetch();
       navigate('/admin/userlist');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
